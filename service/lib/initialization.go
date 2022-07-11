@@ -5,36 +5,22 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-)
 
-type Account struct {
-	Seq         int    `json:"seq"`
-	Id          string `json:"id"`
-	Pw          string `json:"pw"`
-	Name        string `json:"name"`
-	Email       string `json:"email"`
-	Hp          string `json:"hp"`
-	Role        int    `json:"role"`
-	State       int    `json:"state"`
-	Description string `json:"description"`
-}
+	"e10dev.example/exam01/service/structure"
+)
 
 func Initialization() {
 	fp, err := os.Open("account.json")
-
 	if err != nil {
 		panic(err)
 	}
+	defer fp.Close()
 
 	byteValue, _ := ioutil.ReadAll(fp)
 
-	fmt.Println("Successfully Opened accounts.json")
-	defer fp.Close()
+	var accounts []structure.Account
 
-	var accounts []Account
-
-	err = json.Unmarshal(byteValue, &accounts)
-	if err != nil {
+	if err = json.Unmarshal(byteValue, &accounts); err != nil {
 		panic(err)
 	}
 
@@ -62,8 +48,7 @@ func Initialization() {
 	}
 	fmt.Println("make Table done")
 
-	for i := 0; i < len(accounts); i++ {
-		var a Account = accounts[i]
+	for _, a := range accounts {
 		Query = `INSERT INTO account (id, pw, name, email, hp, role, state, description)
 			VALUES
 			($1, $2, $3, $4, $5, $6, $7, $8);`

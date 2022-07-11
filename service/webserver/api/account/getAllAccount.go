@@ -11,6 +11,7 @@ import (
 
 func GetAllAccount(c *gin.Context) {
 	db := lib.Openconnection()
+	defer db.Close()
 
 	Query := `SELECT * FROM account;`
 	rows, err := db.Query(Query)
@@ -40,5 +41,4 @@ func GetAllAccount(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, users)
 
-	defer db.Close()
 }

@@ -25,6 +25,7 @@ func Login(c *gin.Context) {
 	}
 
 	db := lib.Openconnection()
+	defer db.Close()
 
 	Query := `SELECT id, pw FROM account
 		WHERE id=$1 AND pw=$2;
@@ -61,6 +62,4 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, "OK")
-
-	defer db.Close()
 }
