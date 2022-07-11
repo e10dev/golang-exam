@@ -1,6 +1,7 @@
 package account
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/csv"
 	"net/http"
@@ -39,7 +40,7 @@ func DownloadCSV(c *gin.Context) {
 	}
 
 	b := &bytes.Buffer{}
-	w := csv.NewWriter(b)
+	w := csv.NewWriter(bufio.NewWriter(b))
 
 	if err := w.Write([]string{
 		"seq", "id", "pw", "name", "email",
@@ -50,6 +51,7 @@ func DownloadCSV(c *gin.Context) {
 
 	for _, user := range users {
 		var record []string
+
 		record = append(record, strconv.Itoa(user.Seq))
 		record = append(record, user.Id)
 		record = append(record, user.Pw)
