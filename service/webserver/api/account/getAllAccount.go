@@ -30,6 +30,9 @@ func GetAllAccount(c *gin.Context) {
 	for rows.Next() {
 		err := rows.Scan(&seq, &id, &pw, &name, &email, &hp, &role, &state, &description)
 		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": http.StatusInternalServerError,
+			})
 			panic(err)
 		}
 		users = append(users, structure.Account{seq, id, pw, name, email, hp, role, state, description})

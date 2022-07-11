@@ -17,7 +17,9 @@ func DeleteAccount(c *gin.Context) {
 
 	_, err := db.Exec(Query, param)
 	if err != nil {
-		c.Abort()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 

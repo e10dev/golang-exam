@@ -31,6 +31,9 @@ func GetAccount(c *gin.Context) {
 		err := rows.Scan(&user.Seq, &user.Id, &user.Pw, &user.Name,
 			&user.Email, &user.Hp, &user.Role, &user.State, &user.Description)
 		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": http.StatusInternalServerError,
+			})
 			panic(err)
 		}
 		c.IndentedJSON(http.StatusOK, user)

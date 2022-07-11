@@ -16,7 +16,9 @@ func UpdateAccount(c *gin.Context) {
 	body := c.Request.Body
 	value, err := ioutil.ReadAll(body)
 	if err != nil {
-		c.Abort()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 
@@ -33,7 +35,9 @@ func UpdateAccount(c *gin.Context) {
 	_, err = db.Exec(Query, a.Id, a.Pw, a.Name, a.Email,
 		a.Hp, a.Role, a.State, a.Description, param)
 	if err != nil {
-		c.Abort()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 

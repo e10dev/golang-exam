@@ -18,6 +18,9 @@ type Payload struct {
 func Login(c *gin.Context) {
 	var payload Payload
 	if err := c.BindJSON(&payload); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 
@@ -48,6 +51,9 @@ func Login(c *gin.Context) {
 	for rows.Next() {
 		err := rows.Scan(&id, &pw)
 		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": http.StatusInternalServerError,
+			})
 			panic(err)
 		}
 

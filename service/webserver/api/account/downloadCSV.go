@@ -34,6 +34,9 @@ func DownloadCSV(c *gin.Context) {
 	for rows.Next() {
 		err := rows.Scan(&seq, &id, &pw, &name, &email, &hp, &role, &state, &description)
 		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": http.StatusInternalServerError,
+			})
 			panic(err)
 		}
 		users = append(users, structure.Account{seq, id, pw, name, email, hp, role, state, description})
@@ -45,7 +48,9 @@ func DownloadCSV(c *gin.Context) {
 	if err := w.Write([]string{
 		"seq", "id", "pw", "name", "email",
 		"hp", "role", "state", "description"}); err != nil {
-		c.Abort()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 
@@ -62,13 +67,18 @@ func DownloadCSV(c *gin.Context) {
 		record = append(record, strconv.Itoa(user.State))
 		record = append(record, user.Description)
 		if err := w.Write(record); err != nil {
-			c.Abort()
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": http.StatusInternalServerError,
+			})
 			panic(err)
 		}
 	}
 	w.Flush()
 
 	if err := w.Error(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 

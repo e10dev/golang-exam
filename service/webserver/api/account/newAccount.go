@@ -13,7 +13,9 @@ func NewAccount(c *gin.Context) {
 	body := c.Request.Body
 	value, err := ioutil.ReadAll(body)
 	if err != nil {
-		c.Abort()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": http.StatusInternalServerError,
+		})
 		panic(err)
 	}
 

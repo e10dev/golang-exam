@@ -39,6 +39,7 @@ func Initialization() {
 	}
 
 	db := Openconnection()
+	defer db.Close()
 
 	Query := `
 	DROP TABLE IF EXISTS account;
@@ -71,6 +72,4 @@ func Initialization() {
 			panic(err)
 		}
 	}
-
-	defer db.Close()
 }
